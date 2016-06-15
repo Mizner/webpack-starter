@@ -23,6 +23,7 @@
     "cssnano": "^3.7.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "postcss": "^5.0.21",
+    "postcss-bem-linter": "^2.5.1",
     "postcss-cssnext": "^2.6.0",
     "postcss-loader": "^0.9.1",
     "postcss-scss": "^0.1.8",

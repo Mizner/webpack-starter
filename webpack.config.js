@@ -1,60 +1,23 @@
 var webpack = require('webpack');
-var path = require('path');
-//var rucksack = require('rucksack-css');
-var precss = require('precss');
 var merge = require('webpack-merge');
+var path = require('path');
+
+var autoprefixer = require('autoprefixer');
+
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var precss = require('precss');
+//var rucksack = require('rucksack-css');
 
 var APP_DIR = path.resolve(__dirname, 'app');
 var BUILD_DIR = path.resolve(__dirname, 'build');
 
-
-
 var config = {
-    /*
-     entry: [
-     'babel-polyfill',
-     'webpack-dev-server/client?http://localhost:8080',
-     'webpack/hot/only-dev-server',
-     './app/index.jsx'
-     ],
-     output: {
-     path: path.join(__dirname),
-     filename: 'bundle.js'
-     },
-     */
-    /*
-     module: {
-     loaders: [
-     {
-     test: /\.jsx?/,
-     exclude: /node_modules/,
-     loaders: ['react-hot', 'babel-loader']
-     },
-     {
-     test: /\.css$/,
-     loaders: ['style-loader', 'css-loader', 'postcss-loader']
-     }
-     ]
-     },
-     */
-    /*
-     postcss: [
-     precss,
 
-     rucksack({
-     fallbacks: true,
-     autoprefixer: true
-     })
-
-     ],
-     devtool: 'source-map'
-     */
 };
 /*
  * PRODUCTION ENVIRONMENT
  */
-
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var prodEnv = {
     entry: [
         APP_DIR + '/index.jsx'
@@ -74,61 +37,24 @@ var prodEnv = {
             {
                 test: /\.css$/,
                 include: APP_DIR,
-                loader: ExtractTextPlugin.extract
-                (
-                    "style-loader",
-                    "css-loader",
-                    "postcss-loader"
-                )
+                loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader'])
             }
-        ]
+        ],
     },
     plugins: [
         new ExtractTextPlugin("file.css", {
             allChunks: true
         })
+    ],
+    postcss: [
+        precss,
+        autoprefixer
     ]
 };
 /*
  * DEV ENVIRONMENT
  */
-var devEnvRoot = {
-    entry: [
-        'babel-polyfill',
-        'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server',
-        './app/index.jsx'
-    ],
-    output: {
-        path: path.join(__dirname),
-        filename: 'bundle.js'
-    },
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?/,
-                exclude: /node_modules/,
-                loaders: ['react-hot', 'babel-loader']
-            },
-            {
-                test: /\.css$/,
-                loaders: ['style-loader', 'css-loader', 'postcss-loader']
-            }
-        ]
-    },
-    postcss: [
-        precss,
-        /*
-         rucksack({
-
-         fallbacks: true,
-         autoprefixer: true
-         })
-         */
-    ],
-    devtool: 'source-map'
-};
-var devEnvFolder = {
+var devEnv = {
     entry: [
         'babel-polyfill',
         'webpack-dev-server/client?http://localhost:8080',
@@ -152,34 +78,23 @@ var devEnvFolder = {
             }
         ]
     },
-    devServer: {
-        // contentBase: "./build"
-        // filename: "index.js",
-        // publicPath: "/build/"
-    },
     postcss: [
-        precss
-        /*
-         rucksack({
-
-         fallbacks: true,
-         autoprefixer: true
-         })
-         */
+        precss,
+        autoprefixer
     ]
 };
+
 // Detect how npm is run and branch based on that
 switch (process.env.npm_lifecycle_event) {
     case 'build':
         config = merge(config, prodEnv);
         break;
     case 'dev':
-        config = merge(config, devEnvFolder);
+        config = merge(config, devEnv);
         break;
     default:
         console.log('NOPE');
 }
-
 
 
 module.exports = config;

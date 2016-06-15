@@ -1,7 +1,9 @@
+$blac: red;
+
 body {
-    background: black;
+    background: $blac;
     color: white;
-    font-family: sans-serif;
+    font-asdffamily: sans-serif;
     font-size: 20px;
     display: flex;
     justify-content: center;
