@@ -93,7 +93,7 @@
 	                _react2.default.createElement(
 	                    'p',
 	                    null,
-	                    ' Hello React! '
+	                    ' Hello Reaasdfct! '
 	                ),
 	                _react2.default.createElement(_component2.default, null)
 	            );
